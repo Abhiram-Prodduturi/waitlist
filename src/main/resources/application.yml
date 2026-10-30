@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: course-waitlist
+
+app:
+  waitlist:
+    offering:
+      id: CS201-2026F
+      capacity: 2
+      prerequisites: [CS101]
+    learners:
+      - id: L-001
+        completed-courses: [CS101]
+      - id: L-002
+        completed-courses: [CS101]
+      - id: L-003
+        completed-courses: [CS101]
+      - id: L-004
+        completed-courses: [CS101, MA101]
+      - id: L-005
+        completed-courses: []

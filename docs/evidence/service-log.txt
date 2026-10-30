@@ -1,0 +1,6 @@
+]633;E;echo "# Service log: state-change lines";bd3ee70b-a08e-4790-9150-ab4b542d5ca6]633;C# Service log: state-change lines
+INFO Enrolled learner=L-001 offering=CS201-2026F
+INFO Enrolled learner=L-002 offering=CS201-2026F
+INFO Waitlisted learner=L-003 offering=CS201-2026F position=1
+INFO Dropped learner=L-001 offering=CS201-2026F
+INFO Promoted learner=L-003 offering=CS201-2026F

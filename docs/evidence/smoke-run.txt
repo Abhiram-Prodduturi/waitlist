@@ -1,0 +1,47 @@
+]633;E;echo "# Smoke run against java -jar target/course-waitlist-0.1.0-SNAPSHOT.jar (fresh start, seed data from application.yml)";bd3ee70b-a08e-4790-9150-ab4b542d5ca6]633;C# Smoke run against java -jar target/course-waitlist-0.1.0-SNAPSHOT.jar (fresh start, seed data from application.yml)
+# Captured 2026-10-30T22:44:30+05:30
+
+$ curl -X GET http://localhost:8080/offerings/CS201-2026F 
+{"offeringId":"CS201-2026F","capacity":2,"seatsAvailable":2,"prerequisites":["CS101"],"enrolled":[],"waitlist":[]}
+-> HTTP 200
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L-001"}'
+{"outcome":"ENROLLED","learnerId":"L-001","waitlistPosition":null,"promotedLearnerId":null,"removedIneligibleLearnerIds":[]}
+-> HTTP 201
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L-002"}'
+{"outcome":"ENROLLED","learnerId":"L-002","waitlistPosition":null,"promotedLearnerId":null,"removedIneligibleLearnerIds":[]}
+-> HTTP 201
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L-003"}'
+{"outcome":"WAITLISTED","learnerId":"L-003","waitlistPosition":1,"promotedLearnerId":null,"removedIneligibleLearnerIds":[]}
+-> HTTP 202
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L-003"}'
+{"outcome":"ALREADY_WAITLISTED","learnerId":"L-003","waitlistPosition":1,"promotedLearnerId":null,"removedIneligibleLearnerIds":[]}
+-> HTTP 200
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L-005"}'
+{"type":"about:blank","title":"Prerequisites not met","status":422,"detail":"Learner L-005 has not completed all prerequisites","instance":"/offerings/CS201-2026F/enrollments","outcome":"PREREQUISITES_NOT_MET","missingPrerequisites":["CS101"]}
+-> HTTP 422
+
+$ curl -X DELETE http://localhost:8080/offerings/CS201-2026F/enrollments/L-001 
+{"outcome":"DROPPED","learnerId":"L-001","waitlistPosition":null,"promotedLearnerId":"L-003","removedIneligibleLearnerIds":[]}
+-> HTTP 200
+
+$ curl -X DELETE http://localhost:8080/offerings/CS201-2026F/enrollments/L-001 
+{"outcome":"NOT_ENROLLED","learnerId":"L-001","waitlistPosition":null,"promotedLearnerId":null,"removedIneligibleLearnerIds":[]}
+-> HTTP 200
+
+$ curl -X DELETE http://localhost:8080/offerings/CS201-2026F/enrollments/L-999 
+{"type":"about:blank","title":"Learner not found","status":404,"detail":"Learner L-999 was not found","instance":"/offerings/CS201-2026F/enrollments/L-999","outcome":"LEARNER_NOT_FOUND"}
+-> HTTP 404
+
+$ curl -X POST http://localhost:8080/offerings/CS201-2026F/enrollments -d '{"learnerId":"L 9"}'
+{"type":"about:blank","title":"Invalid request","status":400,"detail":"learnerId and offeringId are required and must match ^[A-Za-z0-9-]{1,64}$","instance":"/offerings/CS201-2026F/enrollments","outcome":"INVALID_REQUEST"}
+-> HTTP 400
+
+$ curl -X GET http://localhost:8080/offerings/CS201-2026F 
+{"offeringId":"CS201-2026F","capacity":2,"seatsAvailable":0,"prerequisites":["CS101"],"enrolled":["L-002","L-003"],"waitlist":[]}
+-> HTTP 200
+

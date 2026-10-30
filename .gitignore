@@ -1,0 +1,15 @@
+# Build output
+target/
+
+# AI tooling configuration (kept local, not part of the submission)
+.kiro/
+.cursor/
+
+# IDE and OS files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Assessment brief (not published)
+*.pdf
